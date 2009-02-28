@@ -1,7 +1,7 @@
 require 'delegate'
 require 'singleton'
 require 'tempfile'
-require 'ftools'
+require 'ftools' if RUBY_VERSION < '1.9'
 require 'stringio'
 require 'zlib'
 require 'zip/stdrubyext'

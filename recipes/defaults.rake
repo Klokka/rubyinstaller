@@ -25,7 +25,17 @@ task :check
 desc "Test drive the sandbox (using IRB)."
 task :irb
 
-descr =[:download, :extract, :prepare, :configure, :compile, :install] 
+descr =[
+  :download,
+  :extract,
+  :prepare,
+  :source_dependency_configure,
+  :source_dependency_compile,
+  :source_dependency_install,
+  :configure,
+  :compile,
+  :install
+] 
 desc "Do everything! #{descr.inspect}"
 task :default => descr
 

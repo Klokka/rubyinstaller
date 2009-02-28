@@ -55,20 +55,20 @@ module RubyInstaller
     
     Ruby18 = OpenStruct.new(
       :release => "preview1",
-      :version => "1.8.6-p114",
+      :version => "1.8.7-p72",
       :url => "http://ftp.ruby-lang.org/pub/ruby/1.8",
       :checkout => 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_8_6',
       :checkout_target => 'downloads/ruby_1_8',
       :target => 'sandbox/ruby_1_8',
       :build_target => 'sandbox/ruby_build',
-      :install_target => 'sandbox/ruby_mingw',
+      :install_target => RubyInstaller::MinGW.target,
       :configure_options => [
         '--enable-shared',
         '--with-winsock2',
         '--disable-install-doc'
       ],
       :files => [
-        'ruby-1.8.6-p114.tar.bz2'
+        'ruby-1.8.7-p72.tar.bz2'
       ],
       :dependencies => [
         'readline5.dll',
@@ -80,14 +80,44 @@ module RubyInstaller
         'gdbm3.dll'
       ]
     )
-    
+
+    Ruby19 = OpenStruct.new(
+      :release => "p0",
+      :version => "1.9.1",
+      :url => "http://ftp.ruby-lang.org/pub/ruby/1.9",
+      :checkout => 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_9_1',
+      :checkout_target => 'downloads/ruby_1_9',
+      :target => 'sandbox/ruby_1_9',
+      :build_target => 'sandbox/ruby_build_1_9',
+      :install_target => RubyInstaller::MinGW.target,
+      :configure_options => [
+        '--enable-shared',
+        '--disable-install-doc',
+        "optflags='-O0'",
+        "debugflags='-g3 -ggdb'"
+      ],
+      :files => [
+        'ruby-1.9.1-p0.tar.bz2'
+      ],
+      :dependencies => [
+        'readline5.dll',
+        'zlib1.dll',
+        'libeay32.dll',
+        'libssl32.dll',
+        'libiconv2.dll',
+        'pdcurses.dll',
+        'gdbm3.dll'
+      ]
+    )
+
     Zlib = OpenStruct.new(
-      :release => "official",
+      :release => 'official',
       :version => "1.2.3",
-      :url => "http://www.zlib.net",
+      :url => "http://easynews.dl.sourceforge.net/gnuwin32",
       :target => RubyInstaller::MinGW.target,
       :files => [
-        'zlib123-dll.zip'
+        'zlib-1.2.3-bin.zip',
+        'zlib-1.2.3-lib.zip'
       ]
     )
     
@@ -161,7 +191,7 @@ module RubyInstaller
       :checkout => 'svn://rubyforge.org/var/svn/rubygems/trunk',
       :checkout_target => 'downloads/rubygems',
       :target => 'sandbox/rubygems',
-      :install_target => 'sandbox/rubygems_mingw',
+      :install_target => RubyInstaller::MinGW.target,
       :configure_options => [
         '--no-ri',
         '--no-rdoc'
@@ -170,7 +200,118 @@ module RubyInstaller
         'rubygems-1.3.1.tgz'
       ]
     )
+
+    #Begin Shoes Dependencies
+
+    Shoes = OpenStruct.new(
+      :release => 'raisins',
+      :version => 'r1134',
+      :url => 'http://shoooes.net/dist',
+      :checkout => 'git://github.com/ender672/shoes',
+      :checkout_target => 'sandbox/shoes',
+      :target => 'sandbox/shoes',
+      
+      :build_target => 'sandbox/shoes_build',
+      :install_target => 'sandbox/shoes_mingw',
+      :configure_options => [],
+      :files => [
+        'shoes2.tar.gz'
+      ]
+    )
+
+    Winhttp = OpenStruct.new(
+      :url => "http://www.holymonkey.com/shoes-packages",
+      :target => RubyInstaller::MinGW.target,
+      :files => ['winhttp.zip']
+    )
+
+    Glib = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18",
+      :version => '2.18.4-1',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'glib-dev_2.18.4-1_win32.zip',
+        'glib_2.18.4-1_win32.zip'
+      ]
+    )
+
+    LibUnGif = OpenStruct.new(
+      :url => "http://easynews.dl.sourceforge.net/gnuwin32",
+      :version => '',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'libungif-4.1.4-bin.zip',
+        'libungif-4.1.4-lib.zip'
+      ]
+    )
+
+    Sqlite3 = OpenStruct.new(
+      :url => "http://www.sqlite.org",
+      :target => 'sandbox/sqlite3',
+      :files => [
+        'sqlitedll-3_6_11.zip',
+        'sqlite-amalgamation-3_6_11.zip'
+      ]
+    )
+
+    PortAudio = OpenStruct.new(
+      :url => "http://www.portaudio.com/archives",
+      :target => 'sandbox/portaudio',
+      :install_target => RubyInstaller::MinGW.target,
+      :files => ['pa_snapshot.tgz']
+    )
+
+    LibJpeg = OpenStruct.new(
+      :url => "http://easynews.dl.sourceforge.net/gnuwin32",
+      :version => '6b',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'libjpeg-6b-bin.zip',
+        'libjpeg-6b-lib.zip'
+      ]
+    )
     
+    LibJpegPatch = OpenStruct.new(
+      :url => "http://www.holymonkey.com/shoes-packages",
+      :target => "sandbox/lib_jpeg_patch",
+      :prepare_target => RubyInstaller::LibJpeg.target,
+      :files => [
+        'lib_jpeg_patch.zip'
+      ]
+    )
+
+    Cairo = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies",
+      :version => '1.8.6-1',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'cairo-dev_1.8.6-1_win32.zip',
+        'cairo_1.8.6-1_win32.zip'
+      ]
+    )
+
+    Pango = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.22",
+      :version => '1.22.2-1',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'pango-dev_1.22.2-1_win32.zip',
+        'pango_1.22.2-1_win32.zip'
+      ]
+    )
+
+    LibPng = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/",
+      :version => '1.2.35-1',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'libpng_1.2.34-1_win32.zip',
+        'libpng-dev_1.2.34-1_win32.zip'
+      ]
+    )
+
+    # End Shoes Dependencies
+
     Wix = OpenStruct.new(
       :release => 'stable',
       :version => '2.0.5805.1',

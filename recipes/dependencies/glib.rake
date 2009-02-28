@@ -2,8 +2,8 @@ require 'rake'
 require 'rake/clean'
 
 namespace(:dependencies) do
-  namespace(:libzlib) do
-    package = RubyInstaller::Zlib
+  namespace(:glib) do
+    package = RubyInstaller::Glib
     directory package.target
     CLEAN.include(package.target)
     
@@ -23,7 +23,7 @@ namespace(:dependencies) do
     # Prepare the :sandbox, it requires the :download task
     task :extract => [:extract_utils, :download, package.target] do
       # grab the files from the download task
-      files = Rake::Task['dependencies:libzlib:download'].prerequisites
+      files = Rake::Task['dependencies:glib:download'].prerequisites
 
       files.each { |f|
         extract(File.join(RubyInstaller::ROOT, f), package.target)
@@ -32,5 +32,5 @@ namespace(:dependencies) do
   end
 end
 
-task :download  => ['dependencies:libzlib:download']
-task :extract   => ['dependencies:libzlib:extract']
+task :download  => ['dependencies:glib:download']
+task :extract   => ['dependencies:glib:extract']

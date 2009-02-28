@@ -2,8 +2,8 @@ require 'rake'
 require 'rake/clean'
 
 namespace(:interpreter) do
-  namespace(:ruby18) do
-    package = RubyInstaller::Ruby18
+  namespace(:ruby19) do
+    package = RubyInstaller::Ruby19
     directory package.target
     directory package.build_target
     directory package.install_target
@@ -37,7 +37,7 @@ namespace(:interpreter) do
 
     task :extract => [:extract_utils, package.target] do
       # grab the files from the download task
-      files = Rake::Task['interpreter:ruby18:download'].prerequisites
+      files = Rake::Task['interpreter:ruby19:download'].prerequisites
 
       # use the checkout copy instead of the packaged file
       unless ENV['CHECKOUT']
@@ -72,7 +72,7 @@ namespace(:interpreter) do
 
     file makefile => [ package.build_target, configurescript ] do
       cd package.build_target do
-        msys_sh "../ruby_1_8/configure #{package.configure_options.join(' ')} --enable-shared --prefix=#{File.join(RubyInstaller::ROOT, package.install_target)}"
+        msys_sh "../ruby_1_9/configure #{package.configure_options.join(' ')} --enable-shared --prefix=#{File.join(RubyInstaller::ROOT, package.install_target)}"
       end
     end
 
@@ -87,6 +87,11 @@ namespace(:interpreter) do
     task :make_install => [package.install_target] do
       cd package.build_target do
         msys_sh "make install"
+      end
+      cd package.target do
+        %w{rake gem irb}.each do |s|
+          cp File.join('bin', s), File.join(RubyInstaller::ROOT, RubyInstaller::MinGW.target, 'bin')
+        end
       end
     end
 
@@ -105,13 +110,13 @@ namespace(:interpreter) do
         end
       end
       
-      # copy original scripts from ruby_1_8 to install_target
+      # copy original scripts from ruby_1_9 to install_target
       Dir.glob("#{package.target}/bin/*").each do |path|
         cp path, File.join(package.install_target, "bin")
       end
 
       # remove path reference to sandbox (after install!!!)
-      rbconfig = File.join(package.install_target, 'lib/ruby/1.8/i386-mingw32/rbconfig.rb')
+      rbconfig = File.join(package.install_target, 'lib/ruby/1.9.1/i386-mingw32/rbconfig.rb')
       contents = File.read(rbconfig).gsub(/#{Regexp.escape(full_install_target)}/) { |match| "" }
       File.open(rbconfig, 'w') { |f| f.write(contents) }
     end
@@ -143,17 +148,17 @@ namespace(:interpreter) do
   end
 end
 
-if ENV['RUBY18']
+unless ENV['RUBY18']
   if ENV['CHECKOUT']
-    task :download  => ['interpreter:ruby18:checkout']
+    task :download  => ['interpreter:ruby19:checkout']
   else
-    task :download  => ['interpreter:ruby18:download']
+    task :download  => ['interpreter:ruby19:download']
   end
-  task :extract   => ['interpreter:ruby18:extract']
-  task :prepare   => ['interpreter:ruby18:prepare']
-  task :source_dependency_configure => ['interpreter:ruby18:configure']
-  task :source_dependency_compile   => ['interpreter:ruby18:compile']
-  task :source_dependency_install   => ['interpreter:ruby18:make_install']
-  task :check     => ['interpreter:ruby18:check']
-  task :irb       => ['interpreter:ruby18:irb']
+  task :extract   => ['interpreter:ruby19:extract']
+  task :prepare   => ['interpreter:ruby19:prepare']
+  task :source_dependency_configure => ['interpreter:ruby19:configure']
+  task :source_dependency_compile   => ['interpreter:ruby19:compile']
+  task :source_dependency_install   => ['interpreter:ruby19:make_install']
+  task :check     => ['interpreter:ruby19:check']
+  task :irb       => ['interpreter:ruby19:irb']
 end

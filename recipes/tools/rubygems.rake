@@ -95,11 +95,12 @@ TEXT
   end
 end
 
-
-if ENV['CHECKOUT']
-  task :download  => ['tools:rubygems:checkout']
-else
-  task :download  => ['tools:rubygems:download']
+if ENV['RUBY18']
+  if ENV['CHECKOUT']
+    task :download  => ['tools:rubygems:checkout']
+  else
+    task :download  => ['tools:rubygems:download']
+  end
+  task :extract   => ['tools:rubygems:extract']
+  task :install   => ['tools:rubygems:install']
 end
-task :extract   => ['tools:rubygems:extract']
-task :install   => ['tools:rubygems:install']
