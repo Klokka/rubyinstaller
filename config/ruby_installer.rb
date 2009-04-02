@@ -11,8 +11,11 @@ module RubyInstaller
   
   unless defined?(ROOT)
     # Root folder
-    ROOT = File.expand_path(File.join(File.dirname(__FILE__), ".."))
-    
+    ROOT = File.join('c:', 'shoes_dev')
+
+    # Downloads folder
+    DOWNLOADS = File.join ROOT, 'downloads'
+
     # MinGW files
     MinGW = OpenStruct.new(
       :release => 'current',
@@ -65,7 +68,9 @@ module RubyInstaller
       :configure_options => [
         '--enable-shared',
         '--with-winsock2',
-        '--disable-install-doc'
+        '--disable-install-doc',
+        'optflags="-O0"',
+        'debugflags="-g3 -ggdb"'
       ],
       :files => [
         'ruby-1.8.7-p72.tar.bz2'
@@ -308,6 +313,12 @@ module RubyInstaller
         'libpng_1.2.34-1_win32.zip',
         'libpng-dev_1.2.34-1_win32.zip'
       ]
+    )
+    
+    Git = OpenStruct.new(
+      :url => 'http://msysgit.googlecode.com/files',
+      :target => 'sandbox/msysgit',
+      :files => ['PortableGit-1.6.2.1-preview20090322.exe']
     )
 
     # End Shoes Dependencies
