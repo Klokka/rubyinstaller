@@ -5,39 +5,12 @@ namespace(:dependencies) do
   namespace(:port_audio) do
     package = RubyInstaller::PortAudio
     extracted_files_target = File.join package.target, 'portaudio'
-    
-    directory extracted_files_target
-    directory package.install_target
-    CLEAN.include(package.target)
-    CLEAN.include(package.install_target)
-    
-    # Put files for the :download task
-    package.files.each do |f|
-      file_source = "#{package.url}/#{f}"
-      file_target = "downloads/#{f}"
-      download file_target => file_source
-      
-      # depend on downloads directory
-      file file_target => "downloads"
-      
-      # download task need these files as pre-requisites
-      task :download => file_target
-    end
-
-    # Prepare the :sandbox, it requires the :download task
-    task :extract => [:extract_utils, :download, package.target] do
-      # grab the files from the download task
-      files = Rake::Task['dependencies:port_audio:download'].prerequisites
-
-      files.each { |f|
-        extract(File.join(RubyInstaller::ROOT, f), package.target)
-      }
-    end
+    standard_download_and_extract package
 
     makefile = File.join(extracted_files_target, 'Makefile')
     configurescript = File.join(extracted_files_target, 'configure')
 
-    file makefile => [ package.target, configurescript ] do
+    file makefile => [package.target, configurescript] do
       cd extracted_files_target do
         msys_sh "configure --prefix=#{File.join(RubyInstaller::ROOT, package.install_target)}"
       end

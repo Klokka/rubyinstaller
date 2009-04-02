@@ -18,7 +18,7 @@ def extract(file, target, options = {})
     when /(^.+)\.tgz$/
       seven_zip tmpdir, file
       seven_zip target, File.join(tmpdir, "#{File.basename($1)}.tar")
-    when /(^.+\.zip$)/
+    when /(^.+\.zip$)/, /(^.+\.exe$)/
       seven_zip(target, $1)
     else
       raise "Unknown file extension! (for file #{file})"

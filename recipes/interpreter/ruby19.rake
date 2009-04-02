@@ -4,135 +4,98 @@ require 'rake/clean'
 namespace(:interpreter) do
   namespace(:ruby19) do
     package = RubyInstaller::Ruby19
-    directory package.target
-    directory package.build_target
-    directory package.install_target
-    CLEAN.include(package.target)
-    CLEAN.include(package.build_target)
-    CLEAN.include(package.install_target)
+    standard_download_and_extract package
     
-    # Put files for the :download task
-    package.files.each do |f|
-      file_source = "#{package.url}/#{f}"
-      file_target = "downloads/#{f}"
-      download file_target => file_source
-      
-      # depend on downloads directory
-      file file_target => "downloads"
-      
-      # download task need these files as pre-requisites
-      task :download => file_target
-    end
+    target = File.join RubyInstaller::ROOT, package.target
+    build_target = File.join RubyInstaller::ROOT, package.build_target
+    install_target = File.join RubyInstaller::ROOT, package.install_target
 
-    task :checkout => "downloads" do
+    directory build_target
+    directory install_target
+    CLEAN.include build_target
+    CLEAN.include install_target
+
+    task :prepare => [build_target] do
       cd RubyInstaller::ROOT do
-        # If is there already a checkout, update instead of checkout"
-        if File.exist?(File.join(RubyInstaller::ROOT, package.checkout_target, '.svn'))
-          sh "svn update #{package.checkout_target}"
-        else
-          sh "svn co #{package.checkout} #{package.checkout_target}"
-        end
-      end
-    end
-
-    task :extract => [:extract_utils, package.target] do
-      # grab the files from the download task
-      files = Rake::Task['interpreter:ruby19:download'].prerequisites
-
-      # use the checkout copy instead of the packaged file
-      unless ENV['CHECKOUT']
-        files.each { |f|
-          extract(File.join(RubyInstaller::ROOT, f), package.target)
-        }
-      else
-        cp_r(package.checkout_target, File.join(RubyInstaller::ROOT, 'sandbox'), :verbose => true, :remove_destination => true)
-      end
-    end
-    ENV['CHECKOUT'] ? task(:extract => :checkout) : task(:extract => :download)
-
-    task :prepare => [package.build_target] do
-      cd RubyInstaller::ROOT do
-        cp_r(Dir.glob('resources/icons/*.ico'), package.build_target, :verbose => true)
+        cp_r(Dir.glob('resources/icons/*.ico'), build_target, :verbose => true)
       end
 
       # FIXME: Readline is not working, remove it for now.
-      cd package.target do
+      cd target do
         rm_f 'test/readline/test_readline.rb'
       end
     end
-
-    makefile = File.join(package.build_target, 'Makefile')
-    configurescript = File.join(package.target, 'configure')
-
-    file configurescript => [ package.target ] do
-      cd package.target do
-        msys_sh "autoconf"
-      end
-    end
-
-    file makefile => [ package.build_target, configurescript ] do
-      cd package.build_target do
-        msys_sh "../ruby_1_9/configure #{package.configure_options.join(' ')} --enable-shared --prefix=#{File.join(RubyInstaller::ROOT, package.install_target)}"
+    
+    makefile = File.join(build_target, 'Makefile')
+    file makefile => [build_target] do
+      cd build_target do
+        msys_sh "../ruby_1_9/configure #{package.configure_options.join(' ')} --enable-shared --prefix=#{install_target}"
       end
     end
 
     task :configure => makefile
     
     task :compile => makefile do
-      cd package.build_target do
+      cd build_target do
         msys_sh "make"
       end
     end
 
-    task :make_install => [package.install_target] do
-      cd package.build_target do
+    task :make_install => [install_target] do
+      p "hello hello hello hello hello hello hello"
+      cd build_target do
         msys_sh "make install"
       end
-      cd package.target do
-        %w{rake gem irb}.each do |s|
-          cp File.join('bin', s), File.join(RubyInstaller::ROOT, RubyInstaller::MinGW.target, 'bin')
+      cd target do
+        %w{rake gem irb}.each do|s|
+          p "==============================="
+          p File.join('bin', s)
+          p File.join(RubyInstaller::ROOT, RubyInstaller::MinGW.target, 'bin')
+          p "==============================="
+          cp(
+            File.join('bin', s),
+            File.join(RubyInstaller::ROOT, RubyInstaller::MinGW.target, 'bin')
+          )
         end
       end
     end
 
-    task :install => [package.install_target] do
-      full_install_target = File.expand_path(File.join(RubyInstaller::ROOT, package.install_target))
-      
+    task :install => [install_target] do
       # perform make install
-      cd package.build_target do
+      cd build_target do
         msys_sh "make install"
       end
       
       # verbatim copy the binaries listed in package.dependencies
       package.dependencies.each do |dep|
-        Dir.glob("#{RubyInstaller::MinGW.target}/**/#{dep}").each do |path|
-          cp path, File.join(package.install_target, "bin")
+        Dir.glob("#{File.join RubyInstaller::ROOT, RubyInstaller::MinGW.target}/**/#{dep}").each do |path|
+          cp path, File.join(install_target, "bin")
         end
       end
       
       # copy original scripts from ruby_1_9 to install_target
-      Dir.glob("#{package.target}/bin/*").each do |path|
-        cp path, File.join(package.install_target, "bin")
+      Dir.glob("#{target}/bin/*").each do |path|
+        cp path, File.join(install_target, "bin")
       end
 
       # remove path reference to sandbox (after install!!!)
-      rbconfig = File.join(package.install_target, 'lib/ruby/1.9.1/i386-mingw32/rbconfig.rb')
-      contents = File.read(rbconfig).gsub(/#{Regexp.escape(full_install_target)}/) { |match| "" }
+      rbconfig = File.join(install_target, 'lib/ruby/1.9.1/i386-mingw32/rbconfig.rb')
+      contents = File.read(rbconfig).gsub(/#{Regexp.escape(install_target)}/) { |match| "" }
       File.open(rbconfig, 'w') { |f| f.write(contents) }
     end
 
     # makes the installed ruby the first in the path and use if for the tests!
     task :check do
-      new_ruby = File.join(RubyInstaller::ROOT, package.install_target, "bin").gsub(File::SEPARATOR, File::ALT_SEPARATOR)
+      new_ruby = File.join(install_target, "bin").gsub(File::SEPARATOR, File::ALT_SEPARATOR)
       ENV['PATH'] = "#{new_ruby};#{ENV['PATH']}"
-      cd package.build_target do
+      cd build_target do
         msys_sh "make check"
       end
     end
 
     task :manifest do
-      manifest = File.open(File.join(package.build_target, "manifest"), 'w')
-      cd package.install_target do
+      manifest = File.open(File.join(build_target, "manifest"), 'w')
+      cd install_target do
         Dir.glob("**/*").each do |f|
           manifest.puts(f) unless File.directory?(f)
         end
@@ -141,7 +104,7 @@ namespace(:interpreter) do
     end
 
     task :irb do
-      cd File.join(package.install_target, 'bin') do
+      cd File.join(install_target, 'bin') do
         sh "irb"
       end
     end

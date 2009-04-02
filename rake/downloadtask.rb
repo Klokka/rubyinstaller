@@ -35,8 +35,9 @@ def download(args)
   else
     # Download to a file task instead
     fail unless args.keys.size == 1
+    target = args.keys.first.to_s
     uri = URI.parse(args.values.first.to_s)
-    file_create(args.keys.first) do |task|
+    file_create(target) do |task|
       task.sources << uri
       task.enhance { uri.download(task.name, options) }
     end

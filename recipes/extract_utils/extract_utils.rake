@@ -2,26 +2,15 @@ require 'rake/contrib/unzip'
 
 namespace(:extract_utils) do
   package = RubyInstaller::ExtractUtils
+  standard_download package
+
   directory package.target
   CLEAN.include(package.target)
   
-  # Put files for the :download task
-  package.files.each do |f|
-    file_source = "#{package.url}/#{f}"
-    file_target = "downloads/#{f}"
-    download file_target => file_source
-    
-    # depend on downloads directory
-    file file_target => "downloads"
-    
-    # download task need these files as pre-requisites
-    task :download => file_target
-  end
-  
   task :extract_utils => [:download, package.target] do
     package.files.each do |f|
-      filename = "downloads/#{f}"
-      Zip.fake_unzip(filename, /\.exe|\.dll$/, package.target)
+      path = File.join RubyInstaller::DOWNLOADS, f
+      Zip.fake_unzip(path, /\.exe|\.dll$/, package.target)
     end
   end
 end
