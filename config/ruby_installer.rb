@@ -11,7 +11,7 @@ module RubyInstaller
   
   unless defined?(ROOT)
     # Root folder
-    ROOT = File.join('c:', 'shoes_dev')
+    ROOT = File.join('d:', 'shoes_dev')
 
     # Downloads folder
     DOWNLOADS = File.join ROOT, 'downloads'
@@ -87,7 +87,7 @@ module RubyInstaller
     )
 
     Ruby19 = OpenStruct.new(
-      :release => "p378",
+      :release => "p376",
       :version => "1.9.1",
       :url => "http://ftp.ruby-lang.org/pub/ruby/1.9",
       :checkout => 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_9_1',
@@ -102,7 +102,8 @@ module RubyInstaller
         "debugflags='-g3 -ggdb'"
       ],
       :files => [
-        'ruby-1.9.1-p378.tar.bz2'
+        'ruby-1.9.1-p376.tar.gz'
+        #'ruby-1.9.1-p0.tar.bz2'
       ],
       :dependencies => [
         'readline5.dll',
@@ -266,6 +267,7 @@ module RubyInstaller
       :files => ['pa_snapshot.tgz']
     )
 
+=begin
     LibJpeg = OpenStruct.new(
       :url => "http://easynews.dl.sourceforge.net/gnuwin32",
       :version => '6b',
@@ -282,6 +284,16 @@ module RubyInstaller
       :prepare_target => RubyInstaller::LibJpeg.target,
       :files => [
         'lib_jpeg_patch.zip'
+      ]
+    )
+=end
+
+    LibJpeg = OpenStruct.new(
+      :url => "http://www.ijg.org/",
+      :version => '8b',
+      :target => "sandbox",
+      :files => [
+        'libjpeg_v8_bin_lib_include.zip'
       ]
     )
 
