@@ -11,7 +11,7 @@ module RubyInstaller
   
   unless defined?(ROOT)
     # Root folder
-    ROOT = File.join('d:', 'shoes_dev')
+    ROOT = File.join('c:', 'shoes_dev')
 
     # Downloads folder
     DOWNLOADS = File.join ROOT, 'downloads'
