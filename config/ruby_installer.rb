@@ -298,11 +298,11 @@ module RubyInstaller
 
     Cairo = OpenStruct.new(
       :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies",
-      :version => '1.8.6-1',
+      :version => '1.8.10-1',
       :target => RubyInstaller::MinGW.target,
       :files => [
-        'cairo-dev_1.8.6-1_win32.zip',
-        'cairo_1.8.6-1_win32.zip'
+        'cairo-dev_1.8.10-1_win32.zip',
+        'cairo_1.8.10-1_win32.zip'
       ]
     )
 
@@ -316,6 +316,7 @@ module RubyInstaller
       ]
     )
 
+=begin
     LibPng = OpenStruct.new(
       :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/",
       :version => '1.2.35-1',
@@ -325,7 +326,8 @@ module RubyInstaller
         'libpng-dev_1.2.34-1_win32.zip'
       ]
     )
-    
+=end
+
     Git = OpenStruct.new(
       :url => 'http://msysgit.googlecode.com/files',
       :target => 'sandbox/msysgit',
