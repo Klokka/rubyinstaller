@@ -4,7 +4,7 @@ require 'rake/clean'
 namespace(:dependencies) do
   namespace(:iconv) do
     package = RubyInstaller::Iconv
-    standard_download_and_extract RubyInstaller::Gdbm
+    standard_download_and_extract package
     
     task :prepare => [package.target] do
       # win_iconv needs some adjustments.
