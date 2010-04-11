@@ -57,8 +57,8 @@ module RubyInstaller
     )
     
     Ruby18 = OpenStruct.new(
-      :release => "preview1",
-      :version => "1.8.7-p72",
+      :release => "p249",
+      :version => "1.8.7",
       :url => "http://ftp.ruby-lang.org/pub/ruby/1.8",
       :checkout => 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_8_6',
       :checkout_target => 'downloads/ruby_1_8',
@@ -73,7 +73,7 @@ module RubyInstaller
         'debugflags="-g3 -ggdb"'
       ],
       :files => [
-        'ruby-1.8.7-p72.tar.bz2'
+        'ruby-1.8.7-p249.tar.bz2'
       ],
       :dependencies => [
         'readline5.dll',
@@ -191,7 +191,7 @@ module RubyInstaller
     
     RubyGems = OpenStruct.new(
       :release => 'official',
-      :version => '1.3.1',
+      :version => '1.3.6',
       :url => 'http://rubyforge.org/frs/download.php/45905',
       :checkout => 'svn://rubyforge.org/var/svn/rubygems/trunk',
       :checkout_target => 'downloads/rubygems',
@@ -202,7 +202,7 @@ module RubyInstaller
         '--no-rdoc'
       ],
       :files => [
-        'rubygems-1.3.1.tgz'
+        'rubygems-1.3.6.tgz'
       ]
     )
 
