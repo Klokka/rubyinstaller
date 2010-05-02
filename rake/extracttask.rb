@@ -12,7 +12,7 @@ def extract(file, target, options = {})
   case file
     # tar.z, tar.gz and tar.bz2 contains .tar files inside, extract into 
     # temp first
-    when /(^.+\.tar)\.z$/, /(^.+\.tar)\.gz$/, /(^.+\.tar)\.bz2$/
+    when /(^.+\.tar)\.z$/, /(^.+\.tar)\.gz$/, /(^.+\.tar)\.bz2$/, /(^.+\.tar)\.lzma$/
       seven_zip tmpdir, file
       seven_zip target, File.join(tmpdir, File.basename($1))
     when /(^.+)\.tgz$/
@@ -55,5 +55,5 @@ end
 
 def seven_zip(target, file)
   puts "** Extracting #{file} into #{target}" if Rake.application.options.trace
-  sh "\"#{File.expand_path(File.join('sandbox/extract_utils', '7za.exe'))}\" x -y -o\"#{target}\" \"#{file}\" > NUL"
+  sh "\"#{File.expand_path(File.join('sandbox/extract_utils', '7z.exe'))}\" x -y -o\"#{target}\" \"#{file}\" > NUL"
 end

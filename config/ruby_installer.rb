@@ -152,7 +152,7 @@ module RubyInstaller
         :url => "http://easynews.dl.sourceforge.net/sevenzip",
         :target => 'sandbox/extract_utils',
         :files => [
-          '7za458.zip'
+          '7z913.zip'
         ]
     )
     
