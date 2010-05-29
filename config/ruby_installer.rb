@@ -231,12 +231,12 @@ module RubyInstaller
     )
 
     Glib = OpenStruct.new(
-      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18",
-      :version => '2.18.4-1',
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.24",
+      :version => '2.24.0-2',
       :target => RubyInstaller::MinGW.target,
       :files => [
-        'glib-dev_2.18.4-1_win32.zip',
-        'glib_2.18.4-1_win32.zip'
+        'glib-dev_2.24.0-2_win32.zip',
+        'glib_2.24.0-2_win32.zip'
       ]
     )
 
@@ -307,12 +307,12 @@ module RubyInstaller
     )
 
     Pango = OpenStruct.new(
-      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.22",
-      :version => '1.22.2-1',
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.28",
+      :version => '1.28.0-1',
       :target => RubyInstaller::MinGW.target,
       :files => [
-        'pango-dev_1.22.2-1_win32.zip',
-        'pango_1.22.2-1_win32.zip'
+        'pango-dev_1.28.0-1_win32.zip',
+        'pango_1.28.0-1_win32.zip'
       ]
     )
 
