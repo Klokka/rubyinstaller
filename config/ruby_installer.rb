@@ -254,8 +254,8 @@ module RubyInstaller
       :url => "http://www.sqlite.org",
       :target => 'sandbox/sqlite3',
       :files => [
-        'sqlitedll-3_6_11.zip',
-        'sqlite-amalgamation-3_6_11.zip'
+        'sqlitedll-3_6_23_1.zip',
+        'sqlite-amalgamation-3_6_23_1.zip'
       ]
     )
 
