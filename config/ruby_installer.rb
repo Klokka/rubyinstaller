@@ -23,12 +23,12 @@ module RubyInstaller
       :url => "http://easynews.dl.sourceforge.net/mingw",
       :target => 'sandbox/mingw',
       :files => [
-        'binutils-2.17.50-20060824-1.tar.gz',
+        'mingwrt-3.15.2-mingw32-dll.tar.gz',
+        'mingwrt-3.15.2-mingw32-dev.tar.gz',
+        'w32api-3.13-mingw32-dev.tar.gz',
+        'binutils-2.19.1-mingw32-bin.tar.gz',
         'gcc-core-3.4.5-20060117-3.tar.gz',
         'gcc-g++-3.4.5-20060117-3.tar.gz',
-        'mingw-runtime-3.14.tar.gz',
-        'mingw-utils-0.3.tar.gz',
-        'w32api-3.11.tar.gz',
         'gdb-6.8-mingw-3.tar.bz2'
       ]
     )
@@ -39,20 +39,13 @@ module RubyInstaller
       :url => "http://easynews.dl.sourceforge.net/mingw",
       :target => 'sandbox/msys',
       :files => [
-        'diffutils-2.8.7-MSYS-1.0.11-snapshot.tar.bz2',
-        'findutils-4.3.0-MSYS-1.0.11-snapshot.tar.bz2',
-        'gawk-3.1.5-MSYS-1.0.11-snapshot.tar.bz2',
-        'msysCORE-1.0.11-2007.01.19-1.tar.bz2',
-        'MSYS-1.0.11-20070729.tar.bz2',
-        'coreutils-5.97-MSYS-1.0.11-snapshot.tar.bz2',
-        'texinfo-4.11-MSYS-1.0.11.tar.bz2',
-        'bash-3.1-MSYS-1.0.11-1.tar.bz2',
-        'bison-2.3-MSYS-1.0.11.tar.bz2',
-        'perl-5.6.1-MSYS-1.0.11.tar.bz2',
-        'm4-1.4.7-MSYS.tar.bz2',
-        'msys-autoconf-2.59.tar.bz2',
-        'msys-automake-1.8.2.tar.bz2',
-        'msys-libtool-1.5.tar.bz2'
+        'msysCORE-1.0.11-bin.tar.gz',
+        'findutils-4.4.2-2-msys-1.0.13-bin.tar.lzma',
+        'tar-1.23-1-msys-1.0.13-bin.tar.lzma',
+        'autoconf-2.65-1-msys-1.0.13-bin.tar.lzma',
+        'perl-5.6.1_2-1-msys-1.0.11-bin.tar.lzma',
+        'crypt-1.1_1-2-msys-1.0.11-bin.tar.lzma',
+        'bison-2.3-MSYS-1.0.11.tar.bz2'
       ]
     )
     
@@ -98,8 +91,6 @@ module RubyInstaller
       :configure_options => [
         '--enable-shared',
         '--disable-install-doc',
-        "optflags='-O0'",
-        "debugflags='-g3 -ggdb'"
       ],
       :files => [
         'ruby-1.9.1-p378.tar.bz2'
