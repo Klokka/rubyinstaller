@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+$:.unshift(".") #patch for 1.9.2
+
 # Load Rake
 begin
   require 'rake'
