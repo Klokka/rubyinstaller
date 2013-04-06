@@ -5,7 +5,6 @@ namespace(:interpreter) do
   namespace(:ruby19) do
     package = RubyInstaller::Ruby19
     standard_download_and_extract package
-    
     target = File.join RubyInstaller::ROOT, package.target
     build_target = File.join RubyInstaller::ROOT, package.build_target
     install_target = File.join RubyInstaller::ROOT, package.install_target

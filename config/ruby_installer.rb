@@ -106,6 +106,39 @@ module RubyInstaller
       ]
     )
 
+    Ruby20 = OpenStruct.new(
+      :release => "p0",
+      :version => "2.0.0",
+      :url => "http://ftp.ruby-lang.org/pub/ruby/2.0",
+      :checkout => 'http://svn.ruby-lang.org/repos/ruby/ruby_2_0_0',
+      :checkout_target => 'downloads/ruby_2_0',
+      :target => 'sandbox/ruby_2_0',
+      :build_target => 'sandbox/ruby_build_2_0',
+      :install_target => RubyInstaller::MinGW.target,
+      :configure_options => [
+        '--enable-shared',
+        '--disable-install-doc',
+      ],
+      :files => [
+        'ruby-2.0.0-p0.tar.bz2'
+      ],
+      :dependencies => [
+        'readline5.dll',
+        'zlib1.dll',
+        'libeay32.dll',
+        'libssl32.dll',
+        'libiconv2.dll',
+        'pdcurses.dll',
+        'gdbm3.dll'
+      ]
+    )
+
+    # NEXT mode for Ruby 2.0.0
+    Ruby20.installer_guid = "{ABAA9781-845A-43CC-BABA-76CB580FE35D}"
+    Ruby20.installer_guid_x64 = "{B5BD4615-7C8A-4E50-9179-71B593CA6B67}"
+    Ruby20.short_version = "ruby20"
+    Ruby20.doc_target = "sandbox/doc/ruby20"
+
     Zlib = OpenStruct.new(
       :release => 'official',
       :version => "1.2.3",
@@ -307,17 +340,58 @@ module RubyInstaller
       ]
     )
 
-=begin
-    LibPng = OpenStruct.new(
-      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/",
-      :version => '1.2.35-1',
+    # Cairo Pango Dependencies
+
+    FontConfig = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies",
+      :version => '2.8.0-2',
       :target => RubyInstaller::MinGW.target,
       :files => [
-        'libpng_1.2.34-1_win32.zip',
-        'libpng-dev_1.2.34-1_win32.zip'
+        'fontconfig-dev_2.8.0-2_win32.zip',
+        'fontconfig_2.8.0-2_win32.zip'
       ]
     )
-=end
+
+    Expat = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies",
+      :version => '2.1.0-1',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'expat-dev_2.1.0-1_win32.zip',
+        'expat_2.1.0-1_win32.zip'
+      ]
+    )
+
+    Freetype = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies",
+      :version => '2.4.10-1',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'freetype-dev_2.4.10-1_win32.zip',
+        'freetype_2.4.10-1_win32.zip'
+      ]
+    )
+
+    LibPng = OpenStruct.new(
+      :url => "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies",
+      :version => '1.4.12-1',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'libpng_1.4.12-1_win32.zip',
+        'libpng-dev_1.4.12-1_win32.zip'
+      ]
+    )
+
+    LibYaml = OpenStruct.new(
+      :url => "http://pyyaml.org/download/libyaml",
+      :version => '0.1.4',
+      :target => RubyInstaller::MinGW.target,
+      :files => [
+        'yaml-0.1.4.tar.gz'
+      ]
+    )
+
+    # End Cairo Pango Dependencies
 
     Git = OpenStruct.new(
       :url => 'http://msysgit.googlecode.com/files',
