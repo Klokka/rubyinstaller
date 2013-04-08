@@ -230,6 +230,20 @@ module RubyInstaller
       ]
     )
 
+    Lumi = OpenStruct.new(
+      :release => 'red',
+      :version => 'r0',
+      :url => 'http://github.com/Klokka/Lumi',
+      :checkout => 'git://github.com/Klokka/Lumi',
+      :checkout_target => 'sandbox/Lumi',
+      :target => 'sandbox/Lumi',
+      
+      :build_target => 'sandbox/Lumi_build',
+      :install_target => 'sandbox/Lumi_mingw',
+      :configure_options => [],
+      :files => []
+    )
+
     #Begin Shoes Dependencies
 
     Shoes = OpenStruct.new(
